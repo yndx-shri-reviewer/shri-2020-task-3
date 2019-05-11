@@ -1,36 +1,59 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { join } from 'path';
+import { bemhtml } from 'bem-xjst';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    const serverModulePath = context.asAbsolutePath(
+        join('out', 'server.js')
+    );
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-		console.error('Congratulations, your extension "shri-ext" is now active!');
+    const template = bemhtml.compile();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+    console.log(template.apply({ 
+        block: 'main',
+        content: [
+            { elem: 'form', content: 'fields' },
+            { elem: 'button', content: 'Save' },
+        ]
+    }));
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello SHRI!');
-	});
+    console.log(`server path: ${serverModulePath}`);
+
+    // Use the console to output diagnostic information (console.log) and errors (console.error)
+    // This line of code will only be executed once when your extension is activated
+    console.error('Congratulations, your extension "shri-ext" is now active!');
+
+    // The command has been defined in the package.json file
+    // Now provide the implementation of the command with registerCommand
+    // The commandId parameter must match the command field in package.json
+    let disposable = vscode.commands.registerCommand(
+        'extension.helloWorld',
+        () => {
+            // The code you place here will be executed every time your command is executed
+
+            // Display a message box to the user
+            vscode.window.showInformationMessage('Hello SHRI!');
+        }
+    );
 
     context.subscriptions.push(disposable);
-    
-	let disposable2 = vscode.commands.registerCommand('extension.showTime', () => {
-		// The code you place here will be executed every time your command is executed
 
-		// Display a message box to the user
-		vscode.window.showWarningMessage(new Date().toLocaleTimeString());
-	});
+    let disposable2 = vscode.commands.registerCommand(
+        'extension.showTime',
+        () => {
+            // The code you place here will be executed every time your command is executed
 
-	context.subscriptions.push(disposable);
-	context.subscriptions.push(disposable2);
+            // Display a message box to the user
+            vscode.window.showWarningMessage(new Date().toLocaleTimeString());
+        }
+    );
+
+    context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable2);
 }
 
 // this method is called when your extension is deactivated
