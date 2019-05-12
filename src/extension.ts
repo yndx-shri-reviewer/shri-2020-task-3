@@ -1,15 +1,18 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import { join } from 'path';
-// import { bemhtml } from 'bem-xjst';
+import { readFileSync } from 'fs';
+import { join, resolve, basename } from 'path';
+import { bemhtml } from 'bem-xjst';
 
+import * as vscode from 'vscode';
 import {
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
     TransportKind
 } from 'vscode-languageclient';
+
+const previewPath: string = resolve(__dirname, '../preview/index.html');
+const previewHtml: string = readFileSync(previewPath).toString();
+const template = bemhtml.compile();
 
 let client: LanguageClient;
 
@@ -50,32 +53,48 @@ export function activate(context: vscode.ExtensionContext) {
 
     client.start();
 
-    // const template = bemhtml.compile();
+    /////////////////////////////////////////////////////////////////
 
-    // console.log(template.apply({
-    //     block: 'main',
-    //     content: [
-    //         { elem: 'form', content: 'fields' },
-    //         { elem: 'button', content: 'Save' },
-    //     ]
-    // }));
-
-    // console.log(`server path: ${serverModulePath}`);
-
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
     console.info('Congratulations, your extension is now active!');
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand(
         'example.showPreviewToSide',
         () => {
-            // The code you place here will be executed every time your command is executed
+            const editor = vscode.window.activeTextEditor;
 
-            // Display a message box to the user
-            vscode.window.showInformationMessage('Hello SHRI!');
+            if (editor !== undefined) {
+                const document: vscode.TextDocument = editor.document;
+                const fileName = basename(editor.document.fileName);
+
+                const panel = vscode.window.createWebviewPanel(
+                    'example.preview',
+                    `Preview: ${fileName}`,
+                    vscode.ViewColumn.Beside,
+                    {
+                        enableScripts: true
+                    }
+                );
+
+                panel.webview.html = previewHtml;
+
+                function updateContent(
+                    panel: vscode.WebviewPanel,
+                    document: vscode.TextDocument
+                ) {
+                    if (panel.active) {
+                        const json = document.getText();
+                        const data = JSON.parse(json);
+                        const html = template.apply(data);
+                        panel.webview.postMessage(
+                            html + `<div>${document.uri}</div>`
+                        );
+                    }
+                }
+
+                panel.onDidChangeViewState(e =>
+                    updateContent(e.webviewPanel, document)
+                );
+            }
         }
     );
 
