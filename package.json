@@ -11,7 +11,8 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.helloWorld",
-		"onCommand:extension.showTime"
+        "onCommand:extension.showTime",
+        "onLanguage:json"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -41,6 +42,7 @@
 	},
 	"dependencies": {
 		"bem-xjst": "^8.9.4",
+		"json-to-ast": "^2.1.0",
 		"vscode": "^1.1.34",
 		"vscode-languageclient": "^5.2.1",
 		"vscode-languageserver": "^5.2.1"
