@@ -10,20 +10,37 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
-        "onCommand:extension.showTime",
+        "onCommand:example.showPreviewToSide",
         "onLanguage:json"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			},
+				"command": "example.showPreviewToSide",
+				"title": "Show preview",
+				"category": "Example",
+				"icon": {
+					"light": "./media/PreviewIcon16x.svg",
+					"dark": "./media/PreviewIcon16x_dark.svg"
+				}
+			}
+        ],
+        "menus": {
+            "editor/title": [
+                {
+					"command": "example.showPreviewToSide",
+					"when": "editorLangId == json",
+					"group": "navigation"
+				}
+            ]
+        },
+        "keybindings": [
 			{
-				"command": "extension.showTime",
-				"title": "Show current time"
+				"command": "example.showPreviewToSide",
+				"key": "shift+ctrl+v",
+				"mac": "shift+cmd+v",
+				"when": "editorLangId == json"
 			}
 		]
 	},
