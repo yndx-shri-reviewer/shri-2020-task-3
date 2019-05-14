@@ -8,7 +8,11 @@ import {
     DiagnosticSeverity
 } from 'vscode-languageserver';
 
-import * as parse from 'json-to-ast';
+import {basename} from 'path';
+
+import * as jsonToAst from 'json-to-ast';
+
+import {makeLint} from './linter';
 
 let conn = createConnection(ProposedFeatures.all);
 let docs = new TextDocuments();
@@ -21,41 +25,29 @@ conn.onInitialize((params: InitializeParams) => {
     };
 });
 
-function getChildren(entity: parse.AstJsonEntity): parse.AstJsonEntity[] {
-    switch (entity.type) {
-        case 'Array':
-            return entity.children;
-        case 'Object':
-            return entity.children.map(c => c.value);
-        default:
-            return [];
-    }
-}
-
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-    let text = textDocument.getText();
+    const source = basename(textDocument.uri);
+    const json = textDocument.getText();
 
-    try {
-        const ast = parse(text);
-        const children = getChildren(ast);
+    const validateProperty = (property: jsonToAst.AstProperty) => !/^[A-Z]+$/.test(property.key.value);
 
-        const diagnostics: Diagnostic[] = children.map(entity => {
+    const diagnostics: Diagnostic[] = makeLint(json, validateProperty)
+        .map((property: jsonToAst.AstProperty): Diagnostic => {
             let diagnostic: Diagnostic = {
                 severity: DiagnosticSeverity.Warning,
                 range: {
-                    start: textDocument.positionAt(entity.loc.start.offset),
-                    end: textDocument.positionAt(entity.loc.end.offset)
+                    start: textDocument.positionAt(property.key.loc.start.offset),
+                    end: textDocument.positionAt(property.key.loc.end.offset)
                 },
-                message: `test message`,
-                source: 'ex'
+                message: `Uppercase properties are forbidden!`,
+                source
             };
 
             return diagnostic;
         });
 
+    if (diagnostics.length) {
         conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    } catch (ex) {
-        // do nothing
     }
 }
 
