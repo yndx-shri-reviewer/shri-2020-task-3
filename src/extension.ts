@@ -51,15 +51,21 @@ const createLanguageClient = (context: vscode.ExtensionContext): LanguageClient 
     return client;
 };
 
-const setPreviewContent = (doc: vscode.TextDocument) => {
+const setPreviewContent = (doc: vscode.TextDocument, context: vscode.ExtensionContext) => {
     const panel = PANELS[doc.uri.path];
 
     if (panel) {
+        const mediaPath = vscode.Uri.file(context.extensionPath).with({
+            scheme: "vscode-resource"
+        }).toString() + '/';
+
         try {
             const json = doc.getText();
             const data = JSON.parse(json);
             const html = template.apply(data);
-            panel.webview.html = previewHtml.replace('***', html);
+            panel.webview.html = previewHtml
+                .replace('{{content}}', html)
+                .replace('{{mediaPath}}', mediaPath);
         } catch(e) {}
     }
 };
@@ -96,7 +102,7 @@ const openPreview = (context: vscode.ExtensionContext) => {
             PANELS[document.uri.path].reveal();
         } else {
             const panel = initPreviewPanel(document);
-            setPreviewContent(document);
+            setPreviewContent(document, context);
             context.subscriptions.push(panel);
         }
     }
@@ -111,7 +117,7 @@ export function activate(context: vscode.ExtensionContext) {
     client.start();
 
     const eventChange: vscode.Disposable = vscode.workspace
-        .onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => setPreviewContent(e.document));
+        .onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => setPreviewContent(e.document, context));
 
     const previewCommand = vscode.commands.registerCommand('example.showPreviewToSide', () => openPreview(context));
 
