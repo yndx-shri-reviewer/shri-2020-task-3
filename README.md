@@ -1,65 +1,44 @@
-# shri-ext README
+# Задание 3 — найди ошибки
 
-This is the README for your extension "shri-ext". After writing up a brief description, we recommend including the following sections.
+В этом репозитории находятся материалы тестового задания "Найди ошибки" для [15-й Школы разработки интерфейсов](https://yandex.ru/promo/academy/shri) (осень 2019, Москва).
 
-## Features
+Для работы приложения нужен [Node.JS](https://nodejs.org/en/) v10 или выше, а также редактор [VS Code](https://code.visualstudio.com).
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Задание
 
-For example if there is an image subfolder under your extension project workspace:
+**Вам дан исходный код приложения, в котором есть ошибки. Некоторые из них — стилистические, а другие — даже не позволят вам запустить приложение. Вам нужно найти все ошибки и исправить их.**
 
-\!\[feature X\]\(images/feature-x.png\)
+Тестовое приложение — это плагин VS Code для удобного прототипирования интерфейсов с помощью дизайн-системы из первого задания. Вы можете описать в файле `.json` блоки, из которых состоит интерфейс. Плагин добавляет превью (1) и линтер (2) для структуры блоков.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![](https://jing.yandex-team.ru/files/dima117a/extension.png)
 
-## Requirements
+### 1. Превью интерфейса
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- превью интерфейса доступно для всех файлов `.json`
+- превью открывается в отдельной вкладке
+  - при выполнении команды `Example: Show preview` через палитру команд
+  - при нажатии кнопки сверху от редактора (см. скриншот)
+  - при нажатии горячих клавиш **⌘⇧V** (для MacOS) или **Ctrl+Shift+V** (для Windows)
+- вкладка превью должна открываться рядом с текущим редактором
+- если превью уже открыто, то вместо открытия еще одной вкладки, пользователь должен переходить к уже открытой
+- при изменении структуры блоков в редакторе превью должно обновляться
+- сейчас превью отображает структуру блоков в виде прямоугольников — реализуйте отображение превью с помощью верстки и JS из первого задания
 
-## Extension Settings
+### 2. Линтер структуры блоков
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- линтер применяется для всех файлов `.json`
+- линтер подсвечивает ошибочное место в файле и отображает сообщение при наведении мыши
+- линтер отображает сообщения на панели `Problems` (**⌘⇧M** для MacOS или **Ctrl+Shift+M** для Windows), сообщения группируются по файлам, при клике происходит переход к ошибочному месту
+- сейчас плагин использует линтер-заглушку, проверяющий всего два правило: 1) "запрещены названия полей в верхнем регистре", 2) "в каждом объекте должно быть поле `block`" — подключите в проект линтер из второго задания
 
-For example:
+### 3. Настройки
 
-This extension contributes the following settings:
+Плагин добавляет в настройки VS Code новый раздел `Example` с параметрами ...
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## Как запустить
 
-## Known Issues
+1. открыть проект в VS Code
+2. запустить `npm i`
+3. нажать `F5`
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Должно открыться еще одно окно VS Code с подключенным плагином.
