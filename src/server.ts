@@ -46,9 +46,13 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
             return diagnostic;
         });
 
-    if (diagnostics.length) {
-        conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    }
+    conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+
+    // if (diagnostics.length) {
+    //     conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    // }
+    
+    conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
 docs.onDidChangeContent(change => {
