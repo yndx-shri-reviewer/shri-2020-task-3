@@ -61,6 +61,7 @@ const setPreviewContent = (doc: vscode.TextDocument, context: vscode.ExtensionCo
     if (panel) {
         const mediaPath = vscode.Uri.file(context.extensionPath).with({
             scheme: "vscode-resource"
+        // ERROR: }).toString();
         }).toString() + '/';
 
         try {
@@ -102,8 +103,14 @@ const openPreview = (context: vscode.ExtensionContext) => {
     if (editor !== undefined) {
         const document: vscode.TextDocument = editor.document;
 
-        if (PANELS[document.uri.path]) {
-            PANELS[document.uri.path].reveal();
+        // ERROR:
+        // const path = document.uri.toString();
+        // const panel = PANELS[path];
+
+        const panel = PANELS[document.uri.path];
+
+        if (panel) {
+            panel.reveal();
         } else {
             const panel = initPreviewPanel(document);
             setPreviewContent(document, context);
