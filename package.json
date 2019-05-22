@@ -15,6 +15,29 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Example extension",
+            "properties": {
+                "example.linter.enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable/disable example linter."
+                },
+                "example.linter.severity.uppercaseNamesIsForbidden": {
+                    "type": "string",
+                    "enum": ["Error", "Warning", "Information", "Hint", "None"],
+                    "default": "Warning",
+                    "description": "The 'uppercaseNamesIsForbidden' rule severity."
+                },
+                "example.linter.severity.blockNameIsRequired": {
+                    "type": "string",
+                    "enum": ["Error", "Warning", "Information", "Hint", "None"],
+                    "default": "Warning",
+                    "description": "The 'blockNameIsRequired' rule severity."
+                }
+            }
+        },
 		"commands": [
 			{
 				"command": "example.showPreviewToSide",
