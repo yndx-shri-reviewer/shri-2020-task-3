@@ -19,18 +19,18 @@
             "type": "object",
             "title": "Example extension",
             "properties": {
-                "example.linter.enabled": {
+                "example.enable": {
                     "type": "boolean",
                     "default": false,
                     "description": "Enable/disable example linter."
                 },
-                "example.linter.severity.uppercaseNamesIsForbidden": {
+                "example.severity.uppercaseNamesIsForbidden": {
                     "type": "string",
                     "enum": ["Error", "Warning", "Information", "Hint", "None"],
                     "default": "Warning",
                     "description": "The 'uppercaseNamesIsForbidden' rule severity."
                 },
-                "example.linter.severity.blockNameIsRequired": {
+                "example.severity.blockNameIsRequired": {
                     "type": "string",
                     "enum": ["Error", "Warning", "Information", "Hint", "None"],
                     "default": "Warning",

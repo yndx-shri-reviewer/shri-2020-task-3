@@ -8,33 +8,50 @@ function parseJson(json: string):jsonToAst.AstJsonEntity | undefined  {
     }
 }
 
-function walk(node: jsonToAst.AstJsonEntity, cb: (property: jsonToAst.AstProperty) => void) {
+function walk(
+    node: jsonToAst.AstJsonEntity, 
+    cbProp: (property: jsonToAst.AstProperty) => void,
+    cbObj: (property: jsonToAst.AstObject) => void
+) {
     switch (node.type) {
         case 'Object':
+            cbObj(node);
+
             node.children.forEach((property: jsonToAst.AstProperty) => {
-                cb(property);
-                walk(property.value, cb);
+                cbProp(property);
+                walk(property.value, cbProp, cbObj);
             });
             break;
         case 'Array':
-            node.children.forEach((item: jsonToAst.AstJsonEntity) => walk(item, cb));
+            node.children.forEach((item: jsonToAst.AstJsonEntity) => walk(item, cbProp, cbObj));
             break;
     }
 }
 
-export function makeLint(
-    json: string, 
-    validateProperty: (property: jsonToAst.AstProperty) => boolean): jsonToAst.AstProperty[] {
+export interface LinterProblem<TKey> {
+    key: TKey;
+    loc: jsonToAst.AstLocation;
+}
 
-    const errors: jsonToAst.AstProperty[] = [];
+export function makeLint<TProblemKey>(
+    json: string, 
+    validateProperty: (property: jsonToAst.AstProperty) => LinterProblem<TProblemKey>[],
+    validateObject: (property: jsonToAst.AstObject) => LinterProblem<TProblemKey>[]
+): LinterProblem<TProblemKey>[] {
+
+    const errors: LinterProblem<TProblemKey>[] = [];
     const ast: jsonToAst.AstJsonEntity | undefined = parseJson(json);
 
+    const cbProp = (property: jsonToAst.AstProperty) => {
+        errors.push(...validateProperty(property));
+    };
+
+    const cbObj = (obj: jsonToAst.AstObject) => {
+        errors.push(...validateObject(obj));
+    };
+
     if (ast) {
-        walk(ast, (property: jsonToAst.AstProperty) => {
-            if (!validateProperty(property)) {
-                errors.push(property);
-            }
-        });
+        walk(ast, cbProp, cbObj);
     }
 
     return errors;

@@ -7,7 +7,8 @@ import {
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
-    TransportKind
+    TransportKind,
+    SettingMonitor
 } from 'vscode-languageclient';
 
 const previewPath: string = resolve(__dirname, '../preview/index.html');
@@ -38,7 +39,10 @@ const createLanguageClient = (context: vscode.ExtensionContext): LanguageClient 
                 scheme: 'file',
                 language: 'json'
             }
-        ]
+        ],
+        synchronize: {
+            configurationSection: 'example'
+        }
     };
 
     client = new LanguageClient(
@@ -114,7 +118,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     client = createLanguageClient(context);
 
-    client.start();
+    // ERROR: client.start();
+    context.subscriptions.push(new SettingMonitor(client, 'example.enable').start());
 
     const eventChange: vscode.Disposable = vscode.workspace
         .onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => setPreviewContent(e.document, context));
