@@ -10,34 +10,46 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:example.showPreviewToSide",
-        "onLanguage:json"
+		"onCommand:example.showPreviewToSide",
+		"onLanguage:json"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "Example extension",
-            "properties": {
-                "example.enable": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enable/disable example linter."
-                },
-                "example.severity.uppercaseNamesIsForbidden": {
-                    "type": "string",
-                    "enum": ["Error", "Warning", "Information", "Hint", "None"],
-                    "default": "Warning",
-                    "description": "The 'uppercaseNamesIsForbidden' rule severity."
-                },
-                "example.severity.blockNameIsRequired": {
-                    "type": "string",
-                    "enum": ["Error", "Warning", "Information", "Hint", "None"],
-                    "default": "Warning",
-                    "description": "The 'blockNameIsRequired' rule severity."
-                }
-            }
-        },
+		"configuration": {
+			"type": "object",
+			"title": "Example extension",
+			"properties": {
+				"example.enable": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable/disable example linter."
+				},
+				"example.severity.uppercaseNamesIsForbidden": {
+					"type": "string",
+					"enum": [
+						"Error",
+						"Warning",
+						"Information",
+						"Hint",
+						"None"
+					],
+					"default": "Warning",
+					"description": "The 'uppercaseNamesIsForbidden' rule severity."
+				},
+				"example.severity.blockNameIsRequired": {
+					"type": "string",
+					"enum": [
+						"Error",
+						"Warning",
+						"Information",
+						"Hint",
+						"None"
+					],
+					"default": "Warning",
+					"description": "The 'blockNameIsRequired' rule severity."
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "example.showPreviewToSide",
@@ -48,17 +60,17 @@
 					"dark": "./media/PreviewIcon16x_dark.svg"
 				}
 			}
-        ],
-        "menus": {
-            "editor/title": [
-                {
+		],
+		"menus": {
+			"editor/title": [
+				{
 					"command": "example.showPreviewToSide",
 					"when": "editorLangId == json",
 					"group": "navigation"
 				}
-            ]
-        },
-        "keybindings": [
+			]
+		},
+		"keybindings": [
 			{
 				"command": "example.showPreviewToSide",
 				"key": "shift+ctrl+v",
@@ -83,8 +95,10 @@
 	"dependencies": {
 		"bem-xjst": "^8.9.4",
 		"json-to-ast": "^2.1.0",
+		"request-light": "^0.2.4",
 		"vscode": "^1.1.34",
 		"vscode-languageclient": "^5.2.1",
-		"vscode-languageserver": "^5.2.1"
+		"vscode-languageserver": "^5.2.1",
+		"vscode-nls": "^4.1.1"
 	}
 }
