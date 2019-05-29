@@ -43,10 +43,12 @@ export function makeLint<TProblemKey>(
     const ast: jsonToAst.AstJsonEntity | undefined = parseJson(json);
 
     const cbProp = (property: jsonToAst.AstProperty) => {
+        // ERROR:  errors.concat(...validateProperty(property));
         errors.push(...validateProperty(property));
     };
 
     const cbObj = (obj: jsonToAst.AstObject) => {
+        // ERROR:  errors.concat(...validateObject(obj));
         errors.push(...validateObject(obj));
     };
 
