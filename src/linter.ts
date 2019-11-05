@@ -1,6 +1,7 @@
 import * as jsonToAst from 'json-to-ast';
 
 function parseJson(json: string):jsonToAst.AstJsonEntity | undefined  {
+    // ERROR2: убрать try/catch
     try {
         return jsonToAst(json);
     } catch (err) {
@@ -43,12 +44,12 @@ export function makeLint<TProblemKey>(
     const ast: jsonToAst.AstJsonEntity | undefined = parseJson(json);
 
     const cbProp = (property: jsonToAst.AstProperty) => {
-        // ERROR:  errors.concat(...validateProperty(property));
+        // ERROR2:  errors.concat(...validateProperty(property));
         errors.push(...validateProperty(property));
     };
 
     const cbObj = (obj: jsonToAst.AstObject) => {
-        // ERROR:  errors.concat(...validateObject(obj));
+        // ERROR2:  errors.concat(...validateObject(obj));
         errors.push(...validateObject(obj));
     };
 

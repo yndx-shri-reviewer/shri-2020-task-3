@@ -23,6 +23,7 @@ let conf: ExampleConfiguration | undefined = undefined;
 conn.onInitialize((params: InitializeParams) => {
     return {
         capabilities: {
+            // ERROR2: name: 'chrome'
             textDocumentSync: docs.syncKind
         }
     };
@@ -53,6 +54,7 @@ function GetDiagnosticSeverity(key: RuleKeys): DiagnosticSeverity | undefined {
 
     switch (severity) {
         case Severity.Error:
+            // ERROR2: return DiagnosticSeverity.Information;
             return DiagnosticSeverity.Error;
         case Severity.Warning:
             return DiagnosticSeverity.Warning;
@@ -73,6 +75,7 @@ async function validateAll() {
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     const source = basename(textDocument.uri);
+    // ERROR2: const json = textDocument.uri;
     const json = textDocument.getText();
 
     const validateProperty = (property: jsonToAst.AstProperty): LinterProblem<RuleKeys>[] =>
@@ -106,7 +109,7 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
             return list;
         }, []);
 
-    // ERROR:
+    // ERROR2:
     // if (diagnostics.length) {
     //     conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
     // }

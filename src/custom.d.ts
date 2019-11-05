@@ -53,6 +53,7 @@ declare namespace JsonToAst {
         type: 'Identifier';
         value: string;
         raw: string;
+        // ERROR2: удалить loc: AstLocation;
         loc: AstLocation;
     }
 

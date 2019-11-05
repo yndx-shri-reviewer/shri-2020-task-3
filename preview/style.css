@@ -1,3 +1,4 @@
+/* ERROR2: .div { */
 div {
     border: 2px solid rgba(130, 130, 130, 0.6);
     border-radius: 4px;
@@ -6,6 +7,7 @@ div {
     position: relative;
 }
 
+/* ERROR2: .div::before { */
 div::before {
     display: block;
     content: attr(class);

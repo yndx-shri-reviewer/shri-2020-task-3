@@ -60,6 +60,7 @@ const setPreviewContent = (doc: vscode.TextDocument, context: vscode.ExtensionCo
 
     if (panel) {
         const mediaPath = vscode.Uri.file(context.extensionPath).with({
+            // ERROR2: переименовать схему
             scheme: "vscode-resource"
         // ERROR: }).toString();
         }).toString() + '/';
@@ -68,9 +69,18 @@ const setPreviewContent = (doc: vscode.TextDocument, context: vscode.ExtensionCo
             const json = doc.getText();
             const data = JSON.parse(json);
             const html = template.apply(data);
-            panel.webview.html = previewHtml
-                .replace('{{content}}', html)
-                .replace('{{mediaPath}}', mediaPath);
+            panel.webview.html = previewHtml 
+                // ERROR2: .replace(/{{\s+(\w+)\s+}}/g, (str, key) => {
+                .replace(/{{\s*(\w+)\s*}}/g, (str, key) => {
+                    switch (key) {
+                        case 'content':
+                            return html;
+                        case 'mediaPath':
+                            return mediaPath;
+                        default:
+                            return str;
+                    }
+                });
         } catch(e) {}
     }
 };
