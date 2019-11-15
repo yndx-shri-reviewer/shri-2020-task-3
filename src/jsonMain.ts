@@ -328,7 +328,7 @@ function getSettings(): Settings {
 	return settings;
 }
 
-function getSchemaId(schema: JSONSchemaSettings, rootPath?: string) {
+export function getSchemaId(schema: JSONSchemaSettings, rootPath?: string) {
 	let url = schema.url;
 	if (!url) {
 		if (schema.schema) {
