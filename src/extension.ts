@@ -62,7 +62,6 @@ const setPreviewContent = (doc: vscode.TextDocument, context: vscode.ExtensionCo
         const mediaPath = vscode.Uri.file(context.extensionPath).with({
             // ERROR2: переименовать схему
             scheme: "vscode-resource"
-        // ERROR: }).toString();
         }).toString() + '/';
 
         try {
@@ -113,10 +112,6 @@ const openPreview = (context: vscode.ExtensionContext) => {
     if (editor !== undefined) {
         const document: vscode.TextDocument = editor.document;
 
-        // ERROR:
-        // const path = document.uri.toString();
-        // const panel = PANELS[path];
-
         const panel = PANELS[document.uri.path];
 
         if (panel) {
@@ -135,7 +130,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     client = createLanguageClient(context);
 
-    // ERROR: client.start();
     context.subscriptions.push(new SettingMonitor(client, 'example.enable').start());
 
     const eventChange: vscode.Disposable = vscode.workspace
