@@ -11,7 +11,7 @@ import {
 
 import { basename } from 'path';
 
-import * as jsonToAst from 'json-to-ast';
+import * as jsonToAst from "json-to-ast";
 
 import { ExampleConfiguration, Severity, RuleKeys } from './configuration';
 import { makeLint, LinterProblem } from './linter';
@@ -23,8 +23,7 @@ let conf: ExampleConfiguration | undefined = undefined;
 conn.onInitialize((params: InitializeParams) => {
     return {
         capabilities: {
-            // ERROR2: name: 'always'
-            textDocumentSync: docs.syncKind
+            textDocumentSync: 'always'
         }
     };
 });
@@ -38,8 +37,7 @@ function GetSeverity(key: RuleKeys): DiagnosticSeverity | undefined {
 
     switch (severity) {
         case Severity.Error:
-            // ERROR2: return DiagnosticSeverity.Information;
-            return DiagnosticSeverity.Error;
+            return DiagnosticSeverity.Information;
         case Severity.Warning:
             return DiagnosticSeverity.Warning;
         case Severity.Information:
@@ -65,8 +63,7 @@ function GetMessage(key: RuleKeys): string {
 
 async function validateTextDocument(textDocument: TextDocument): Promise<void> {
     const source = basename(textDocument.uri);
-    // ERROR2: const json = textDocument.uri;
-    const json = textDocument.getText();
+    const json = textDocument.uri;
 
     const validateObject = (
         obj: jsonToAst.AstObject
@@ -121,11 +118,9 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
         []
     );
 
-    // ERROR2:
-    // if (diagnostics.length) {
-    //     conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    // }
-    conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    if (diagnostics.length) {
+        conn.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    }
 }
 
 async function validateAll() {

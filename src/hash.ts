@@ -1,4 +1,4 @@
-import { ISchemaAssociations, getSchemaId } from './jsonMain';
+import {ISchemaAssociations, getSchemaId } from './jsonMain';
 
 function objectHash(obj: any, initialHashVal: number): number {
     initialHashVal = numberHash(181387, initialHashVal);
