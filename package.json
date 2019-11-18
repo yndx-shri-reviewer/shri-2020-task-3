@@ -1,0 +1,104 @@
+{
+	"name": "shri-ext",
+	"displayName": "shri-ext",
+	"description": "The entrance task of Yandex Web Development School.",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.40.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:example.showPreviewToSide",
+		"onLanguage:json"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Example extension",
+			"properties": {
+				"example.enable": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable/disable example linter."
+				},
+				"example.severity.uppercaseNamesIsForbidden": {
+					"type": "string",
+					"enum": [
+						"Error",
+						"Warning",
+						"Information",
+						"Hint",
+						"None"
+					],
+					"default": "Warning",
+					"description": "The 'uppercaseNamesIsForbidden' rule severity."
+				},
+				"example.severity.blockNameIsRequired": {
+					"type": "string",
+					"enum": [
+						"Error",
+						"Warning",
+						"Information",
+						"Hint",
+						"None"
+					],
+					"default": "Warning",
+					"description": "The 'blockNameIsRequired' rule severity."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "example.showPreviewToSide",
+				"title": "Show preview",
+				"category": "Example",
+				"icon": {
+					"light": "./media/PreviewIcon16x.svg",
+					"dark": "./media/PreviewIcon16x_dark.svg"
+				}
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "example.showPreviewToSide",
+					"when": "editorLangId == json",
+					"group": "navigation"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "example.showPreviewToSide",
+				"key": "shift+ctrl+v",
+				"mac": "shift+cmd+v",
+				"when": "editorLangId == json"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
+		"tslint": "^5.12.1",
+		"typescript": "^3.4.5"
+	},
+	"dependencies": {
+		"bem-xjst": "^8.9.6",
+		"json-to-ast": "^2.1.0",
+		"request-light": "^0.2.4",
+		"vscode": "^1.1.36",
+		"vscode-languageclient": "^5.2.1",
+		"vscode-languageserver": "^5.2.1",
+		"vscode-nls": "^4.1.1"
+	}
+}
